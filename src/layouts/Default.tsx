@@ -2,18 +2,24 @@ import { useQuery } from "@tanstack/react-query";
 import { ComponentPropsWithoutRef } from "react";
 import { Link } from "react-router-dom";
 import { notesQueries } from "../api/note/hooks";
+import { Notes } from "../api/note/schema";
+
+const getNotesCount = (notes: Notes) => notes.length;
 
 export const DefaultLayout = ({
   children,
 }: ComponentPropsWithoutRef<"div">) => {
-  const { data: notes } = useQuery(notesQueries.getAll({}));
+  const { data: notesCount } = useQuery({
+    ...notesQueries.getAll({}),
+    select: getNotesCount,
+  });
   return (
     <div className="space-y-8">
       <div className="bg-slate-900">
-        <ul className="container m-auto p-4 flex items-center text-white gap-6">
+        <ul className="container flex items-center gap-6 p-4 m-auto text-white">
           <li>
             <Link className="hover:underline underline-offset-2" to="/">
-              Notes ({notes?.length})
+              Notes ({notesCount})
             </Link>
           </li>
           <li>
@@ -23,7 +29,7 @@ export const DefaultLayout = ({
           </li>
         </ul>
       </div>
-      <div className="container m-auto p-4 ">{children}</div>
+      <div className="container p-4 m-auto ">{children}</div>
     </div>
   );
 };
