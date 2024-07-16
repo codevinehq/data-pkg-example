@@ -21,3 +21,10 @@
 - useMutation with [typesafe onSuccess redirect](src/pages/CreateNote/CreateNote.tsx#L50)
 - Form with toast
 
+## [API](src/api/note/api.ts)
+
+- Service definitions
+
+## [Hooks](src/api/note/hooks.ts)
+
+- React query hooks
