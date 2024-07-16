@@ -10,18 +10,14 @@ import { invalidateByTags } from "../../api";
 export const Notes = () => {
   const queryClient = useQueryClient();
   const { mutate, submittedAt } = useMutation({
-    mutationFn: notesApi.createNote.call,
+    mutationFn: notesApi.create.call,
     onSuccess() {
       queryClient.invalidateQueries({
-        predicate: invalidateByTags(notesApi.getNotes.tags),
+        predicate: invalidateByTags(notesApi.getAll.tags),
       });
     },
   });
-  const {
-    data: notes,
-    isLoading,
-    isError,
-  } = useQuery(notesQueries.getNotes({}));
+  const { data: notes, isLoading, isError } = useQuery(notesQueries.getAll({}));
 
   if (isLoading) return null;
   if (isError) return <>Error loading notes...</>;

@@ -30,11 +30,11 @@ export const CreateNoteForm = ({
     <form className="space-y-4" onSubmit={handleSubmit}>
       <div>
         <Label htmlFor="title">Title</Label>
-        <Input type="text" name="title" id="title" />
+        <Input required minLength={5} type="text" name="title" id="title" />
       </div>
       <div>
         <Label htmlFor="content">Content</Label>
-        <Textarea name="content" id="content"></Textarea>
+        <Textarea required minLength={5} name="content" id="content"></Textarea>
       </div>
       <div>
         <Button type="submit">Create note</Button>
@@ -46,7 +46,7 @@ export const CreateNoteForm = ({
 export const CreateNote = () => {
   const navigate = useNavigate();
   const { mutate } = useMutation({
-    mutationFn: notesApi.createNote.call,
+    mutationFn: notesApi.create.call,
     onSuccess({ id }) {
       toast.success("Note created");
       navigate(`/${id}`);

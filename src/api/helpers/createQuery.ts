@@ -2,7 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 
 import { createUrlWithParams } from "./createUrlWithParams";
 
-type CreateQueryInput<
+export type CreateQueryInput<
   TUrlParams extends Record<string, string>,
   TArgs extends any[],
   TResult

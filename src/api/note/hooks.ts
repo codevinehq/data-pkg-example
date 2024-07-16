@@ -3,6 +3,6 @@ import { createQuery } from "../helpers/createQuery";
 import { notesApi } from "./api";
 
 export const notesQueries = {
-  getNote: createQuery(notesApi.getNote),
-  getNotes: createQuery(notesApi.getNotes),
+  get: createQuery(notesApi.get),
+  getAll: createQuery(notesApi.getAll),
 } satisfies Record<keyof typeof notesApi & `get${string}`, unknown>;
