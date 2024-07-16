@@ -1,5 +1,7 @@
 # Data Example
 
+Everything is typed based on the service definitions, useQuery (including select) and useMutation (including onSuccess etc.) inherit the types automatically. No more generics :tada:
+
 ## Files
 
 ### [Notes](src/pages/Notes/Notes.tsx)
@@ -21,6 +23,14 @@
 - useMutation with [typesafe onSuccess redirect](src/pages/CreateNote/CreateNote.tsx#L50)
 - Form with toast
 
+![typesafe onSuccess redirect](public/image2.png)
+
+### [Layout](src/layouts/Default.tsx)
+
+- useQuery with [typed select](src/layouts/Default.tsx#L9)
+
+![typed select](public/image.png)
+
 ### [API](src/api/note/api.ts)
 
 Service definitions are not tied to a specific data fetching library. This means they can be used by Redux, RTK, React Query, useSWR or any other lib.
@@ -30,6 +40,6 @@ Service definitions are not tied to a specific data fetching library. This means
 
 ### [Hooks](src/api/note/hooks.ts)
 
-These a query helpers for react query see https://tkdodo.eu/blog/the-query-options-api for an explantion of why we want these instead of explicit hooks such as `useNotes`.
+These are query helpers for react query see https://tkdodo.eu/blog/the-query-options-api for an explantion of why we want these instead of explicit hooks such as `useNotes`.
 
 - React query hooks
