@@ -14,7 +14,7 @@ import {
 } from "../../api/note/schema";
 import toast from "react-hot-toast";
 import { invalidateByUrl, invalidateByUrlParams } from "../../api";
-import { useSWRService } from "../../api/note/swr";
+import { useSWRService } from "../../api/helpers/swr";
 
 export const Note = () => {
   const [editMode, setEditMode] = useState(false);

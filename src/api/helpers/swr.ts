@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { CreateQueryInput } from "../helpers/createQuery";
+import { CreateQueryInput } from "./createQuery";
 
 export const useSWRService =
   <TUrlParams extends Record<string, string>, TArgs extends any[], TResult>({
