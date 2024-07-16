@@ -26,6 +26,7 @@
 Service definitions are not tied to a specific data fetching library. This means they can be used by Redux, RTK, React Query, useSWR or any other lib.
 
 - Service definitions
+- [Example using useSWR](src/pages/Note/Note.tsx#L29) [hook factory](src/api/note/swr.ts)
 
 ## [Hooks](src/api/note/hooks.ts)
 

@@ -14,6 +14,7 @@ import {
 } from "../../api/note/schema";
 import toast from "react-hot-toast";
 import { invalidateByUrl, invalidateByUrlParams } from "../../api";
+import { useSWRService } from "../../api/note/swr";
 
 export const Note = () => {
   const [editMode, setEditMode] = useState(false);
@@ -24,6 +25,10 @@ export const Note = () => {
     isLoading,
     refetch,
   } = useQuery(notesQueries.get({ noteId: id! }));
+  // useSWR example
+  // const { data: note, isLoading } = useSWRService(notesApi.get)({
+  //   noteId: id!,
+  // });
   const { mutate } = useMutation({
     mutationFn: (body: Partial<CreateNote>) =>
       notesApi.edit.call({ noteId: id! }, body),
