@@ -1,30 +1,23 @@
-# React + TypeScript + Vite
+# Data Example
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Files
 
-Currently, two official plugins are available:
+### [Notes](src/pages/Notes/Notes.tsx)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- useQuery
+- useMutation with [invalidate by tags](src/pages/Notes/Notes.tsx#L16) (similar to queryKeyFactory) `invalidateByTags(notesApi.getAll.tags)`
+- Form with invalidation
 
-## Expanding the ESLint configuration
+### [Note](src/pages/Note/Note.tsx)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- useQuery with urlParams
+- useMutation with single endpoint invalidation
+- - Example 1: [Refetch](src/pages/Note/Note.tsx#L34)
+- - Example 2: [Invalidate by params](src/pages/Note/Note.tsx#L38) `invalidateByUrlParams(notesApi.get, { noteId: id! })`
+- - Example 3: [Invalidate by url](src/pages/Note/Note.tsx#L43) `invalidateByUrl(notesApi.get, { noteId: id! })`
 
-- Configure the top-level `parserOptions` property like this:
+### [Create Note](src/pages/CreateNote/CreateNote.tsx)
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- useMutation with [typesafe onSuccess redirect](src/pages/CreateNote/CreateNote.tsx#L50)
+- Form with toast
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
