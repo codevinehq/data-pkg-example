@@ -21,14 +21,14 @@
 - useMutation with [typesafe onSuccess redirect](src/pages/CreateNote/CreateNote.tsx#L50)
 - Form with toast
 
-### [API](src/api/note/api.ts)
+### [API](src/api/note/api.ts)
 
 Service definitions are not tied to a specific data fetching library. This means they can be used by Redux, RTK, React Query, useSWR or any other lib.
 
 - Service definitions
 - [Example using useSWR](src/pages/Note/Note.tsx#L29) [hook factory](src/api/note/swr.ts)
 
-### [Hooks](src/api/note/hooks.ts)
+### [Hooks](src/api/note/hooks.ts)
 
 These a query helpers for react query see https://tkdodo.eu/blog/the-query-options-api for an explantion of why we want these instead of explicit hooks such as `useNotes`.
 
