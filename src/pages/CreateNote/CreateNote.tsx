@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useIsMutating,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import type { CreateNote as CreateNoteInput } from "../../api/note/schema";
 import { CreateNoteSchema } from "../../api/note/schema";
 import { Button } from "../../components/Button";
@@ -14,6 +18,7 @@ export const CreateNoteForm = ({
 }: {
   onSubmit: (body: CreateNoteInput) => void;
 }) => {
+  const isMutating = useIsMutating();
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -36,7 +41,9 @@ export const CreateNoteForm = ({
         <Textarea required minLength={5} name="content" id="content"></Textarea>
       </div>
       <div>
-        <Button type="submit">Create note</Button>
+        <Button disabled={!!isMutating} type="submit">
+          Create note
+        </Button>
       </div>
     </form>
   );

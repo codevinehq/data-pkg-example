@@ -1,11 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { notesQueries } from "../api/note/hooks";
 import { Notes } from "../api/note/schema";
+import { SuspenseLoader } from "../components/SuspenseLoader/SuspenseLoader";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "../components/ErrorFallback";
 
 const getNotesCount = (notes: Notes) => notes.length;
 
 export const DefaultLayout = () => {
+  const location = useLocation();
   const { data: notesCount } = useQuery({
     ...notesQueries.getAll({}),
     select: getNotesCount,
@@ -27,7 +31,14 @@ export const DefaultLayout = () => {
         </ul>
       </div>
       <div className="container p-4 m-auto ">
-        <Outlet />
+        <ErrorBoundary
+          FallbackComponent={ErrorFallback}
+          resetKeys={[location.pathname]}
+        >
+          <SuspenseLoader>
+            <Outlet />
+          </SuspenseLoader>
+        </ErrorBoundary>
       </div>
     </div>
   );

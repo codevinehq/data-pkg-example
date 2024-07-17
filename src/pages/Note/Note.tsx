@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { notesQueries } from "../../api/note/hooks";
 import { useParams } from "react-router-dom";
 import { Heading } from "../../components/Typography";
@@ -19,7 +19,7 @@ export const Note = () => {
     data: note,
     isLoading,
     refetch,
-  } = useQuery(notesQueries.get({ urlParams: { noteId: id! } }));
+  } = useSuspenseQuery(notesQueries.get({ urlParams: { noteId: id! } }));
   // useSWR example
   // const { data: note, isLoading } = useSWRService(notesApi.get, {
   //   urlParams: { noteId: id! },
@@ -45,13 +45,10 @@ export const Note = () => {
 
       // Option 4: invalidate by query key
       // queryClient.invalidateQueries({
-      //   queryKey: notesQueries.get({ noteId: id! }).queryKey,
+      // queryKey: notesQueries.get({ urlParams: { noteId: id! } }).queryKey,
       // });
     },
   });
-
-  if (isLoading) return null;
-  if (!note) return <>Note not found</>;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

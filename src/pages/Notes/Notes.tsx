@@ -32,9 +32,7 @@ export const Notes = () => {
     isFetching,
     isError,
   } = useQuery({
-    ...notesQueries.getAll({
-      queryParams: { search },
-    }),
+    ...notesQueries.getAll({ queryParams: { search } }),
     placeholderData: keepPreviousData,
   });
 

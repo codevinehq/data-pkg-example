@@ -12,7 +12,7 @@ Everything is typed based on the service definitions, useQuery (including select
 
 ### [Note](src/pages/Note/Note.tsx)
 
-- useQuery with urlParams
+- useSuspenseQuery - [Example](src/pages/Note/Note.tsx#L22), [Error handling](src/layouts/Default.tsx#L34), [Global Loader](src/layouts/Default.tsx#L38)
 - useMutation with single endpoint invalidation
 - - Example 1: [Refetch](src/pages/Note/Note.tsx#L34)
 - - Example 2: [Invalidate by params](src/pages/Note/Note.tsx#L37) `invalidateByUrlParams(notesApi.get, { noteId: id! })`
