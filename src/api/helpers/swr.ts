@@ -1,21 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import useSWR from "swr";
-import { ComplexServiceArgs } from "./createService";
+import { ComplexServiceArgs, InferServiceArgs } from "./createService";
 
-export const useSWRService = <
-  const TU,
-  const TT extends readonly string[],
-  TArgs extends ComplexServiceArgs,
-  TResult
->(
+export const useSWRService = <TArgs extends ComplexServiceArgs, TResult>(
   {
     url,
     call,
   }: {
-    url: TU;
-    tags?: TT;
-    call: (args: TArgs) => Promise<TResult> | TResult;
+    url: string;
+    call: InferServiceArgs<TArgs, TResult>;
   },
   args: TArgs
 ) =>

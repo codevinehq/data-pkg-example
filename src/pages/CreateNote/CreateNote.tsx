@@ -1,8 +1,4 @@
-import {
-  useIsMutating,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useIsMutating, useMutation } from "@tanstack/react-query";
 import type { CreateNote as CreateNoteInput } from "../../api/note/schema";
 import { CreateNoteSchema } from "../../api/note/schema";
 import { Button } from "../../components/Button";

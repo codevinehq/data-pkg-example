@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { notesQueries } from "../../api/note/hooks";
 import { useParams } from "react-router-dom";
 import { Heading } from "../../components/Typography";
@@ -15,11 +15,9 @@ export const Note = () => {
   const [editMode, setEditMode] = useState(false);
   // const queryClient = useQueryClient();
   const { id } = useParams();
-  const {
-    data: note,
-    isLoading,
-    refetch,
-  } = useSuspenseQuery(notesQueries.get({ urlParams: { noteId: id! } }));
+  const { data: note, refetch } = useSuspenseQuery(
+    notesQueries.get({ urlParams: { noteId: id! } })
+  );
   // useSWR example
   // const { data: note, isLoading } = useSWRService(notesApi.get, {
   //   urlParams: { noteId: id! },

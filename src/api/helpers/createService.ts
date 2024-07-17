@@ -13,6 +13,10 @@ export type ServiceArgs<T extends SimpleServiceArgs | ComplexServiceArgs> =
     ? { url: string; urlParams: T }
     : { url: string } & T;
 
+export type InferServiceArgs<TArgs extends ComplexServiceArgs, TResult> = (
+  args: TArgs
+) => Promise<TResult> | TResult;
+
 export const createService = <
   const TU,
   const TT,

@@ -2,7 +2,7 @@
 
 The @benefex/data package builds on the concepts behind both `useApi` and our Redux sagas.
 
-Its primary focus is centralising service creation and types. It will also provide convenience methods for React Query, though this could be expanded to more libs in the future if we migrate away from React Query ([see SWR example](src/pages/Note/Note.tsx#L24)).
+Its primary focus is centralising service creation and types. It will also provide convenience methods for React Query, though this could be expanded to more libs in the future if we migrate away from React Query ([see SWR example](src/pages/Note/Note.tsx#L22)).
 
 ## How Will It Work?
 
@@ -75,23 +75,23 @@ It's worth noting that currently mutations are completely untyped and in the mig
 
 ### [Note](src/pages/Note/Note.tsx)
 
-- useSuspenseQuery - [Example](src/pages/Note/Note.tsx#L22), [Error handling](src/layouts/Default.tsx#L34), [Global Loader](src/layouts/Default.tsx#L38)
+- useSuspenseQuery - [Example](src/pages/Note/Note.tsx#L18), [Error handling](src/layouts/Default.tsx#L34), [Global Loader](src/layouts/Default.tsx#L38)
 - useMutation with single endpoint invalidation
-- - Example 1: [Refetch](src/pages/Note/Note.tsx#L34)
-- - Example 2: [Invalidate by params](src/pages/Note/Note.tsx#L37) `invalidateByUrlParams(notesApi.get, { noteId: id! })`
-- - Example 3: [Invalidate by url](src/pages/Note/Note.tsx#L42) `invalidateByUrl(notesApi.get, { noteId: id! })`
-- - Example 4: [Invalidate by queryKey](src/pages/Note/Note.tsx#L47) `notesQueries.get({ noteId: id! }).queryKey`
+- - Example 1: [Refetch](src/pages/Note/Note.tsx#L32)
+- - Example 2: [Invalidate by params](src/pages/Note/Note.tsx#L36) `invalidateByUrlParams(notesApi.get, { noteId: id! })`
+- - Example 3: [Invalidate by url](src/pages/Note/Note.tsx#L41) `invalidateByUrl(notesApi.get, { noteId: id! })`
+- - Example 4: [Invalidate by queryKey](src/pages/Note/Note.tsx#L46) `notesQueries.get({ noteId: id! }).queryKey`
 
 ### [Create Note](src/pages/CreateNote/CreateNote.tsx)
 
-- useMutation with [typesafe onSuccess redirect](src/pages/CreateNote/CreateNote.tsx#L49)
+- useMutation with [typesafe onSuccess redirect](src/pages/CreateNote/CreateNote.tsx#L52)
 - Form with toast
 
 ![typesafe onSuccess redirect](public/image2.png)
 
 ### [Layout](src/layouts/Default.tsx)
 
-- useQuery with [typed select](src/layouts/Default.tsx#L9)
+- useQuery with [typed select](src/layouts/Default.tsx#L13)
 
 ![typed select](public/image.png)
 
@@ -100,7 +100,7 @@ It's worth noting that currently mutations are completely untyped and in the mig
 Service definitions are not tied to a specific data fetching library. This means they can be used by Redux, RTK, React Query, useSWR or any other lib.
 
 - Service definitions
-- [Example using useSWR](src/pages/Note/Note.tsx#L24) and the [hook factory](src/api/helpers/swr.ts)
+- [Example using useSWR](src/pages/Note/Note.tsx#L22) and the [hook factory](src/api/helpers/swr.ts)
 
 ### [Hooks](src/api/note/hooks.ts)
 

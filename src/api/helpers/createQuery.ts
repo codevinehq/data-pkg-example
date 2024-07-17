@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { queryOptions } from "@tanstack/react-query";
-import { ComplexServiceArgs } from "./createService";
+import { ComplexServiceArgs, InferServiceArgs } from "./createService";
 
 export const createQuery =
   <
@@ -17,7 +17,7 @@ export const createQuery =
     }: {
       url: TU;
       tags?: TT;
-      call: (args: TArgs) => Promise<TResult> | TResult;
+      call: InferServiceArgs<TArgs, TResult>;
     },
     options?: { staleTime?: number; cacheTime?: number; enabled?: boolean }
   ) =>
