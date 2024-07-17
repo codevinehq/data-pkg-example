@@ -12,10 +12,13 @@ export const Label = ({
 export const Input = (props: ComponentPropsWithoutRef<"input">) => (
   <input
     {...props}
-    className="border-2 rounded max-w-sm w-full p-2 leading-none"
+    className="w-full max-w-sm p-2 leading-none border-2 rounded outline-none focus:border-amber-400"
   />
 );
 
 export const Textarea = (props: ComponentPropsWithoutRef<"textarea">) => (
-  <textarea {...props} className="border-2 rounded max-w-sm w-full p-2" />
+  <textarea
+    {...props}
+    className="w-full max-w-sm p-2 border-2 rounded outline-none focus:border-amber-400"
+  />
 );

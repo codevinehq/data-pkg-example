@@ -1,34 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { queryOptions } from "@tanstack/react-query";
+import { ComplexServiceArgs } from "./createService";
 
-import { createUrlWithParams } from "./createUrlWithParams";
-
-export type CreateQueryInput<
-  TUrlParams extends Record<string, string>,
-  TArgs extends any[],
-  TResult
-> = {
-  url: string;
-  tags?: readonly string[];
-  call: (urlParams: TUrlParams, ...args: TArgs) => Promise<TResult> | TResult;
-};
-
-export function createQuery<
-  TUrlParams extends Record<string, string>,
-  TArgs extends any[],
-  TResult
->(
-  { url, call, tags = [] }: CreateQueryInput<TUrlParams, TArgs, TResult>,
-  options: { staleTime?: number } = {}
-) {
-  return (urlParams: TUrlParams, ...args: TArgs) =>
+export const createQuery =
+  <
+    const TU,
+    const TT extends readonly string[],
+    TArgs extends ComplexServiceArgs,
+    TResult
+  >(
+    {
+      url,
+      tags,
+      call,
+    }: {
+      url: TU;
+      tags?: TT;
+      call: (args: TArgs) => Promise<TResult> | TResult;
+    },
+    options?: { staleTime?: number; cacheTime?: number; enabled?: boolean }
+  ) =>
+  (args: TArgs) =>
     queryOptions({
       queryKey: [
-        createUrlWithParams(url, urlParams),
-        ...tags,
-        urlParams,
-        ...args,
-      ],
-      queryFn: () => call(urlParams, ...args),
+        url,
+        ...(tags || []),
+        args.urlParams,
+        args.queryParams,
+      ] as const,
+      queryFn: () => call({ url, ...args }),
       ...options,
     });
-}
