@@ -1,4 +1,4 @@
-import { createService } from "../helpers/createServiceHelper";
+import { ServiceArgs, createService } from "../helpers/createService";
 import { mockFetcher } from "../helpers/mockFetcher";
 import { CreateNote, Note, NoteParams, Notes } from "./schema";
 
@@ -11,22 +11,26 @@ export const notesApi = {
   getAll: createService({
     url: "/notes",
     tags: ["notes"] as const,
-    call: (url: string) => mockFetcher<Notes>({ url }),
+    call: (args: ServiceArgs<{ queryParams?: { search: string } }>) =>
+      mockFetcher<Notes>(args),
   }),
   get: createService({
     url: "/notes/:noteId",
     tags: ["notes"] as const,
-    call: (url: string, urlParams: NoteParams) =>
-      mockFetcher<Note>({ url, urlParams }),
+    call: (args: ServiceArgs<NoteParams>) => mockFetcher<Note>(args),
   }),
   create: createService({
     url: "/notes",
-    call: (url: string, body: CreateNote) =>
+    call: ({ url, body }: ServiceArgs<{ body: CreateNote }>) =>
       mockFetcher<Note>({ url, options: { method: "POST", body } }),
   }),
   edit: createService({
     url: "/notes/:noteId",
-    call: (url: string, urlParams: NoteParams, body: Partial<CreateNote>) =>
+    call: ({
+      url,
+      urlParams,
+      body,
+    }: ServiceArgs<{ urlParams: NoteParams; body: Partial<CreateNote> }>) =>
       mockFetcher<Note>({ url, urlParams, options: { method: "POST", body } }),
   }),
 };

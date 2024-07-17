@@ -2,23 +2,32 @@ import { Query } from "@tanstack/react-query";
 import { dequal } from "dequal";
 import { createUrlWithParams } from "./helpers/createUrlWithParams";
 
-import { CreateQueryInput } from "./helpers/createQuery";
-
 export const invalidateByTags = (tags: readonly string[]) => (query: Query) =>
   tags.every((tag) => query.queryKey.includes(tag));
 
+type Service<
+  TArgs extends {
+    urlParams?: Record<string, string>;
+  },
+  TResult
+> = {
+  url: string;
+  call: (args: TArgs) => Promise<TResult>;
+};
+
 export const invalidateByUrlParams =
-  <TUrlParams extends Record<string, string>, TArgs extends any[], TResult>(
-    _: CreateQueryInput<TUrlParams, TArgs, TResult>,
-    urlParams: TUrlParams
+  <TArgs extends { urlParams: Record<string, string> }, TResult>(
+    _: Service<TArgs, TResult>,
+    urlParams: TArgs["urlParams"]
   ) =>
   (query: Query) =>
     query.queryKey.some((qk) => dequal(qk, urlParams));
 
+// TODO: Fix this type
 export const invalidateByUrl =
-  <TUrlParams extends Record<string, string>, TArgs extends any[], TResult>(
-    { url }: CreateQueryInput<TUrlParams, TArgs, TResult>,
-    urlParams: TUrlParams
+  <TArgs extends { urlParams: Record<string, string> }, TResult>(
+    { url }: Service<TArgs, TResult>,
+    urlParams: TArgs["urlParams"]
   ) =>
   (query: Query) =>
     query.queryKey[0] === createUrlWithParams(url, urlParams || {});

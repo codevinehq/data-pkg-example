@@ -1,10 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import useSWR from "swr";
-import { CreateQueryInput } from "./createQuery";
 
 export const useSWRService =
-  <TUrlParams extends Record<string, string>, TArgs extends any[], TResult>({
+  <TFn extends (args: { urlParams: any; queryParams: any; body: any }) => any>({
     url,
     call,
-  }: CreateQueryInput<TUrlParams, TArgs, TResult>) =>
-  (...key: Parameters<typeof call>) =>
-    useSWR([url, key], ([_, rest]) => call(...rest));
+  }: {
+    url: string;
+    call: TFn;
+  }) =>
+  (args: Parameters<TFn>[0]) =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useSWR(
+      [url, args.urlParams, args.queryParams],
+      (): ReturnType<TFn> => call(args)
+    );

@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateNote as CreateNoteInput } from "../../api/note/schema";
 import { CreateNoteSchema } from "../../api/note/schema";
 import { Button } from "../../components/Button";
@@ -8,7 +8,6 @@ import { notesApi } from "../../api/note/api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FormEvent } from "react";
-import { DefaultLayout } from "../../layouts/Default";
 
 export const CreateNoteForm = ({
   onSubmit,
@@ -54,11 +53,9 @@ export const CreateNote = () => {
   });
 
   return (
-    <DefaultLayout>
-      <section className="space-y-6">
-        <Heading level={1}>Create Note</Heading>
-        <CreateNoteForm onSubmit={mutate} />
-      </section>
-    </DefaultLayout>
+    <section className="space-y-6">
+      <Heading level={1}>Create Note</Heading>
+      <CreateNoteForm onSubmit={(body) => mutate({ body })} />
+    </section>
   );
 };

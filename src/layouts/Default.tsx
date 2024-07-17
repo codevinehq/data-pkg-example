@@ -1,14 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { ComponentPropsWithoutRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { notesQueries } from "../api/note/hooks";
 import { Notes } from "../api/note/schema";
 
 const getNotesCount = (notes: Notes) => notes.length;
 
-export const DefaultLayout = ({
-  children,
-}: ComponentPropsWithoutRef<"div">) => {
+export const DefaultLayout = () => {
   const { data: notesCount } = useQuery({
     ...notesQueries.getAll({}),
     select: getNotesCount,
@@ -29,7 +26,9 @@ export const DefaultLayout = ({
           </li>
         </ul>
       </div>
-      <div className="container p-4 m-auto ">{children}</div>
+      <div className="container p-4 m-auto ">
+        <Outlet />
+      </div>
     </div>
   );
 };

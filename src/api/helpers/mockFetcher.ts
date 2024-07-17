@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { NotesSchema } from "../note/schema";
 
 export type SERVICE_BODY = Array<Record<string, any>> | Record<string, any>;
@@ -11,9 +13,16 @@ export type SERVICE_ARGS = {
   };
 };
 
+const randomInt = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const mockFetcher = async <TData>({
   url,
   urlParams,
+  queryParams,
   options,
 }: SERVICE_ARGS): Promise<TData> => {
   const notes = NotesSchema.safeParse(
@@ -28,11 +37,22 @@ export const mockFetcher = async <TData>({
     throw new Error("Notes are corrupt, please clear localStorage");
   }
 
+  await delay(randomInt(20, 300));
+
+  const params = new URLSearchParams(queryParams);
+
   const method = options?.method?.toLowerCase() ?? "get";
-  console.log(url, urlParams, options);
-  if (url === "/notes" && method === "get") return notes.data as any;
-  if (url.startsWith("/notes/") && method === "get")
+  if (url === "/notes" && method === "get")
+    return notes.data.filter((n) =>
+      params.has("search")
+        ? n.title
+            .toLowerCase()
+            .includes(params.get("search")?.toLowerCase() || "")
+        : n
+    ) as any;
+  if (url.startsWith("/notes/") && method === "get") {
     return notes.data.find((note) => note.id === urlParams?.noteId) as any;
+  }
   if (url.startsWith("/notes/") && method === "post") {
     const note = notes.data.find((note) => note.id === urlParams?.noteId);
 
