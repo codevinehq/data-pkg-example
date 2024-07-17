@@ -23,7 +23,6 @@ export const invalidateByUrlParams =
   (query: Query) =>
     query.queryKey.some((qk) => dequal(qk, urlParams));
 
-// TODO: Fix this type
 export const invalidateByUrl =
   <TArgs extends { urlParams: Record<string, string> }, TResult>(
     { url }: Service<TArgs, TResult>,
