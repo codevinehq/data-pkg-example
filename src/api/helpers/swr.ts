@@ -1,18 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import useSWR from "swr";
+import { ComplexServiceArgs } from "./createService";
 
-export const useSWRService =
-  <TFn extends (args: { urlParams: any; queryParams: any; body: any }) => any>({
+export const useSWRService = <
+  const TU,
+  const TT extends readonly string[],
+  TArgs extends ComplexServiceArgs,
+  TResult
+>(
+  {
     url,
     call,
   }: {
-    url: string;
-    call: TFn;
-  }) =>
-  (args: Parameters<TFn>[0]) =>
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useSWR(
-      [url, args.urlParams, args.queryParams],
-      (): ReturnType<TFn> => call(args)
-    );
+    url: TU;
+    tags?: TT;
+    call: (args: TArgs) => Promise<TResult> | TResult;
+  },
+  args: TArgs
+) =>
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useSWR([url, args.urlParams, args.queryParams], () => call(args));

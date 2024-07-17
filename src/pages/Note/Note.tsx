@@ -21,7 +21,7 @@ export const Note = () => {
     refetch,
   } = useQuery(notesQueries.get({ urlParams: { noteId: id! } }));
   // useSWR example
-  // const { data: note, isLoading } = useSWRService(notesApi.get)({
+  // const { data: note, isLoading } = useSWRService(notesApi.get, {
   //   urlParams: { noteId: id! },
   // });
   const { mutate } = useMutation({
