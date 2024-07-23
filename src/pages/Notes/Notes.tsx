@@ -8,12 +8,11 @@ import {
 import { Heading, Link } from "../../components/Typography";
 import { ButtonLink } from "../../components/Button";
 import { CreateNoteForm } from "../CreateNote/CreateNote";
-import { notesApi } from "../../api/note/api";
 import { useState } from "react";
 import { Input } from "../../components/Form";
-import { invalidateByTags } from "../../api";
+import { invalidateByTags } from "../../api/helpers/invalidators";
 import { Spinner } from "../../components/Icons";
-import { notesQueries } from "../../api/note/hooks";
+import { api } from "../../api";
 
 export const Notes = () => {
   const queryClient = useQueryClient();
@@ -24,15 +23,15 @@ export const Notes = () => {
     isFetching,
     isError,
   } = useQuery({
-    ...notesQueries.getAll({ searchParams: { search } }),
+    ...api.notes.getAll.query({ searchParams: { search } }),
     placeholderData: keepPreviousData,
   });
   const { mutate, submittedAt } = useMutation({
-    mutationFn: notesApi.create.call,
+    mutationFn: api.notes.create.call,
     onSuccess() {
       // Update the notes list
       queryClient.invalidateQueries({
-        predicate: invalidateByTags(notesApi.getAll.tags),
+        predicate: invalidateByTags(api.notes.getAll.tags),
       });
     },
   });

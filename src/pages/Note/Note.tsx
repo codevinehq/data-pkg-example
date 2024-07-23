@@ -5,10 +5,9 @@ import { Heading } from "../../components/Typography";
 import { FormEvent, useState } from "react";
 import { Input, Textarea } from "../../components/Form";
 import { Button } from "../../components/Button";
-import { notesApi } from "../../api/note/api";
 import { CreateNote, CreateNoteSchema } from "../../api/note/schema";
 import toast from "react-hot-toast";
-import { notesQueries } from "../../api/note/hooks";
+import { api } from "../../api";
 // import { invalidateByUrl, invalidateByUrlParams } from "../../api";
 // import { useSWRService } from "../../api/helpers/swr";
 
@@ -17,16 +16,16 @@ export const Note = () => {
   // const queryClient = useQueryClient();
   const { id } = useParams();
   const { data: note, refetch } = useSuspenseQuery(
-    notesQueries.get({ urlParams: { noteId: id! } })
+    api.notes.get.query({ urlParams: { noteId: id! } })
   );
   // useSWR example
-  // const { data: note, isLoading } = useSWRService(notesApi.get, {
+  // const { data: note, isLoading } = useSWRService(api.notes.get, {
   //   urlParams: { noteId: id! },
   // });
 
   const { mutate } = useMutation({
     mutationFn: (body: Partial<CreateNote>) =>
-      notesApi.edit.call({ urlParams: { noteId: id! }, body }),
+      api.notes.edit.call({ urlParams: { noteId: id! }, body }),
     onSuccess() {
       toast.success("Note updated");
       setEditMode(false);
@@ -35,17 +34,17 @@ export const Note = () => {
 
       // Option 2: invalidate by params
       // queryClient.invalidateQueries({
-      //   predicate: invalidateByUrlParams(notesApi.get, { noteId: id! }),
+      //   predicate: invalidateByUrlParams(api.notes.get, { noteId: id! }),
       // });
 
       // Option 3: invalidate by url
       // queryClient.invalidateQueries({
-      //   predicate: invalidateByUrl(notesApi.get, { noteId: id! }),
+      //   predicate: invalidateByUrl(api.notes.get, { noteId: id! }),
       // });
 
       // Option 4: invalidate by query key
       // queryClient.invalidateQueries({
-      // queryKey: notesApi.get.query({ urlParams: { noteId: id! } }).queryKey,
+      // queryKey: api.notes.get.query({ urlParams: { noteId: id! } }).queryKey,
       // });
     },
   });

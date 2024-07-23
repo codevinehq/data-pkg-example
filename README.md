@@ -34,19 +34,6 @@ const notesService = {
 };
 ```
 
-### Query Helpers
-
-A query helper is a wrapper around React Query's `queryOptions` API.
-
-Example:
-
-```ts
-export const notesQueries = {
-  get: createQuery(notesApi.get, { staleTime: ms("5m") }), // Adds a default cache time of 5 minutes, can be overidden,
-  getAll: createQuery(notesApi.getAll),
-} satisfies Record<keyof typeof notesApi & `get${string}`, unknown>;
-```
-
 ## Example query migration
 
 Everything is typed based on the service definitions, useQuery (including select) and useMutation (including onSuccess etc.) inherit the types automatically. No more generics :tada:
@@ -70,7 +57,7 @@ It's worth noting that currently mutations are completely untyped and in the mig
 ### [Notes](src/pages/Notes/Notes.tsx)
 
 - useQuery
-- useMutation with [invalidate by tags](src/pages/Notes/Notes.tsx#L24) (similar to queryKeyFactory) `invalidateByTags(notesApi.getAll.tags)`
+- useMutation with [invalidate by tags](src/pages/Notes/Notes.tsx#L24) (similar to queryKeyFactory) `invalidateByTags(notesService.getAll.tags)`
 - Form with invalidation
 
 ### [Note](src/pages/Note/Note.tsx)
@@ -78,9 +65,9 @@ It's worth noting that currently mutations are completely untyped and in the mig
 - useSuspenseQuery - [Example](src/pages/Note/Note.tsx#L18), [Error handling](src/layouts/Default.tsx#L34), [Global Loader](src/layouts/Default.tsx#L38)
 - useMutation with single endpoint invalidation
 - - Example 1: [Refetch](src/pages/Note/Note.tsx#L32)
-- - Example 2: [Invalidate by params](src/pages/Note/Note.tsx#L36) `invalidateByUrlParams(notesApi.get, { noteId: id! })`
-- - Example 3: [Invalidate by url](src/pages/Note/Note.tsx#L41) `invalidateByUrl(notesApi.get, { noteId: id! })`
-- - Example 4: [Invalidate by queryKey](src/pages/Note/Note.tsx#L46) `notesQueries.get({ noteId: id! }).queryKey`
+- - Example 2: [Invalidate by params](src/pages/Note/Note.tsx#L36) `invalidateByUrlParams(notesService.get, { noteId: id! })`
+- - Example 3: [Invalidate by url](src/pages/Note/Note.tsx#L41) `invalidateByUrl(notesService.get, { noteId: id! })`
+- - Example 4: [Invalidate by queryKey](src/pages/Note/Note.tsx#L46) `notesService.get.query({ noteId: id! }).queryKey`
 
 ### [Create Note](src/pages/CreateNote/CreateNote.tsx)
 
@@ -95,15 +82,9 @@ It's worth noting that currently mutations are completely untyped and in the mig
 
 ![typed select](public/image.png)
 
-### [API](src/api/note/api.ts)
+### [API](src/api/note/index.ts)
 
 Service definitions are not tied to a specific data fetching library. This means they can be used by Redux, RTK, React Query, useSWR or any other lib.
 
 - Service definitions
 - [Example using useSWR](src/pages/Note/Note.tsx#L22) and the [hook factory](src/api/helpers/swr.ts)
-
-### [Hooks](src/api/note/hooks.ts)
-
-These are query helpers for react query see https://tkdodo.eu/blog/the-query-options-api for an explantion of why we want these instead of explicit hooks such as `useNotes`.
-
-- React query hooks

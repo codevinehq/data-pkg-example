@@ -4,14 +4,14 @@ import { Notes } from "../api/note/schema";
 import { SuspenseLoader } from "../components/SuspenseLoader";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "../components/ErrorFallback";
-import { notesQueries } from "../api/note/hooks";
+import { api } from "../api";
 
 const getNotesCount = (notes: Notes) => notes.length;
 
 export const DefaultLayout = () => {
   const location = useLocation();
   const { data: notesCount } = useQuery({
-    ...notesQueries.getAll({}),
+    ...api.notes.getAll.query({}),
     select: getNotesCount,
   });
   return (

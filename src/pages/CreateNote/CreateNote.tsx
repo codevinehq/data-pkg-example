@@ -4,10 +4,10 @@ import { CreateNoteSchema } from "../../api/note/schema";
 import { Button } from "../../components/Button";
 import { Label, Input, Textarea } from "../../components/Form";
 import { Heading } from "../../components/Typography";
-import { notesApi } from "../../api/note/api";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { FormEvent } from "react";
+import { api } from "../../api";
 
 export const CreateNoteForm = ({
   onSubmit,
@@ -51,7 +51,7 @@ export const CreateNoteForm = ({
 export const CreateNote = () => {
   const navigate = useNavigate();
   const { mutate } = useMutation({
-    mutationFn: notesApi.create.call,
+    mutationFn: api.notes.create.call,
     onSuccess({ id }) {
       toast.success("Note created");
       navigate(`/${id}`);

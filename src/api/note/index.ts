@@ -1,15 +1,19 @@
-import { ServiceArgs, createService } from "../helpers/createService";
+import {
+  ServiceArgs,
+  createQueryService,
+  createService,
+} from "../helpers/createService";
 import { jsonFetch } from "../helpers/jsonFetch";
 import { CreateNote, Note, NoteParams, Notes } from "./schema";
 
-export const notesApi = {
-  getAll: createService({
+export const notesService = {
+  getAll: createQueryService({
     url: "/notes",
     tags: ["notes"] as const,
     call: (args: ServiceArgs<{ searchParams?: { search: string } }>) =>
       jsonFetch<Notes>(args),
   }),
-  get: createService({
+  get: createQueryService({
     url: "/notes/:noteId",
     tags: ["notes"] as const,
     call: (args: ServiceArgs<NoteParams>) => jsonFetch<Note>(args),

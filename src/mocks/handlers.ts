@@ -1,8 +1,8 @@
 import { http, HttpResponse } from "msw";
-import { notesApi } from "../api/note/api";
 import { createNoteMock } from "../api/note/mocks";
-import { CreateNoteSchema, NoteSchema } from "../api/note/schema";
+import { CreateNoteSchema } from "../api/note/schema";
 import { seed } from "@ngneat/falso";
+import { api } from "../api";
 
 seed("42");
 
@@ -24,11 +24,11 @@ export const getMockNotes = () => {
 };
 
 export const handlers = [
-  http.get(notesApi.get.url, ({ params }) => {
+  http.get(api.notes.get.url, ({ params }) => {
     const { noteId } = params;
     return HttpResponse.json(mockNotes.find((n) => n.id === noteId));
   }),
-  http.get(notesApi.getAll.url, ({ request }) => {
+  http.get(api.notes.getAll.url, ({ request }) => {
     const url = new URL(request.url);
     const search = url.searchParams.get("search");
 
@@ -42,7 +42,7 @@ export const handlers = [
 
     return HttpResponse.json(mockNotes);
   }),
-  http.post(notesApi.create.url, async ({ request }) => {
+  http.post(api.notes.create.url, async ({ request }) => {
     const newNote = CreateNoteSchema.safeParse(await request.json());
 
     if (!newNote.success) {
@@ -53,7 +53,7 @@ export const handlers = [
 
     return HttpResponse.json(newNote, { status: 201 });
   }),
-  http.put(notesApi.edit.url, async ({ request, params }) => {
+  http.put(api.notes.edit.url, async ({ request, params }) => {
     const { noteId } = params;
     const newNote = CreateNoteSchema.safeParse(await request.json());
     const existingNote = mockNotes.find((n) => n.id == noteId);
