@@ -12,6 +12,4 @@ export const useSWRService = <TArgs extends ComplexServiceArgs, TResult>(
     call: InferServiceArgs<TArgs, TResult>;
   },
   args: TArgs
-) =>
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useSWR([url, args.urlParams, args.queryParams], () => call(args));
+) => useSWR([url, args.urlParams, args.searchParams], () => call(args));

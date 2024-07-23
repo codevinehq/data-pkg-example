@@ -23,8 +23,8 @@ const notesService = {
     tags: ["notes"] as const,
     // urlParams only
     call: (args: ServiceArgs<NoteParams>) => mockFetcher<Note>(args),
-    // urlParams and queryParams
-    // call: (args: ServiceArgs<{ urlParams: NoteParams, queryParams: NoteQuery }>) => mockFetcher<Note>(args),
+    // urlParams and searchParams
+    // call: (args: ServiceArgs<{ urlParams: NoteParams, searchParams: NoteQuery }>) => mockFetcher<Note>(args),
   }),
   create: createService({
     url: "/notes",

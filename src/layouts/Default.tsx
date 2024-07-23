@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { notesQueries } from "../api/note/hooks";
 import { Notes } from "../api/note/schema";
-import { SuspenseLoader } from "../components/SuspenseLoader/SuspenseLoader";
+import { SuspenseLoader } from "../components/SuspenseLoader";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "../components/ErrorFallback";
+import { notesQueries } from "../api/note/hooks";
 
 const getNotesCount = (notes: Notes) => notes.length;
 

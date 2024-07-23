@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { notesQueries } from "../../api/note/hooks";
+
 import { Heading, Link } from "../../components/Typography";
 import { ButtonLink } from "../../components/Button";
 import { CreateNoteForm } from "../CreateNote/CreateNote";
@@ -13,9 +13,20 @@ import { useState } from "react";
 import { Input } from "../../components/Form";
 import { invalidateByTags } from "../../api";
 import { Spinner } from "../../components/Icons";
+import { notesQueries } from "../../api/note/hooks";
 
 export const Notes = () => {
   const queryClient = useQueryClient();
+  const [search, setSearch] = useState("");
+  const {
+    data: notes,
+    isLoading,
+    isFetching,
+    isError,
+  } = useQuery({
+    ...notesQueries.getAll({ searchParams: { search } }),
+    placeholderData: keepPreviousData,
+  });
   const { mutate, submittedAt } = useMutation({
     mutationFn: notesApi.create.call,
     onSuccess() {
@@ -24,16 +35,6 @@ export const Notes = () => {
         predicate: invalidateByTags(notesApi.getAll.tags),
       });
     },
-  });
-  const [search, setSearch] = useState("");
-  const {
-    data: notes,
-    isLoading,
-    isFetching,
-    isError,
-  } = useQuery({
-    ...notesQueries.getAll({ queryParams: { search } }),
-    placeholderData: keepPreviousData,
   });
 
   if (isLoading) return null;

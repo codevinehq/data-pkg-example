@@ -6,7 +6,7 @@ export const createUrlWithParams = (
 
   return url.replace(/:([^/]+)/g, (str, match) => {
     if (match in allParams) {
-      return allParams[match];
+      return allParams[match] ?? "";
     }
 
     return str;

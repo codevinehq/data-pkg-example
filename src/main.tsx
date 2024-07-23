@@ -10,40 +10,25 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 100 } },
 });
 
-// Seed some notes if none exist
-if (!localStorage.getItem("notes")) {
-  localStorage.setItem(
-    "notes",
-    JSON.stringify([
-      {
-        id: crypto.randomUUID(),
-        title: "Hello world",
-        content: "This is a note",
-      },
-      {
-        id: crypto.randomUUID(),
-        title: "Testing 123",
-        content: "This is another note",
-      },
-      {
-        id: crypto.randomUUID(),
-        title: "Test, test, test",
-        content: "This is a third note",
-      },
-      {
-        id: crypto.randomUUID(),
-        title: "Note 4",
-        content: "This is a fourth note",
-      },
-    ])
-  );
+async function enableMocking() {
+  // if (process.env.NODE_ENV !== "development") {
+  //   return;
+  // }
+
+  const { worker } = await import("./mocks/browser");
+
+  // `worker.start()` returns a Promise that resolves
+  // once the Service Worker is up and ready to intercept requests.
+  return worker.start();
 }
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-      <ReactQueryDevtools initialIsOpen />
-    </QueryClientProvider>
-  </React.StrictMode>
-);
+enableMocking().then(() => {
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <App />
+        <ReactQueryDevtools initialIsOpen />
+      </QueryClientProvider>
+    </React.StrictMode>
+  );
+});

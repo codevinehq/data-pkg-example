@@ -2,10 +2,11 @@
 
 import { queryOptions } from "@tanstack/react-query";
 import { ComplexServiceArgs, InferServiceArgs } from "./createService";
+import { createUrlWithParams } from "./createUrlWithParams";
 
 export const createQuery =
   <
-    const TU,
+    const TU extends string,
     const TT extends readonly string[],
     TArgs extends ComplexServiceArgs,
     TResult
@@ -23,11 +24,17 @@ export const createQuery =
   ) =>
   (args: TArgs) =>
     queryOptions({
+      /**
+       * Create a queryKey based on the defined service url+tags
+       * as well as the usage params urlParams+searchParams
+       *
+       * This allows us to do both broad and granular invalidations
+       */
       queryKey: [
-        url,
+        createUrlWithParams(url, args.urlParams ?? {}),
         ...(tags || []),
         args.urlParams,
-        args.queryParams,
+        args.searchParams,
       ] as const,
       queryFn: () => call({ url, ...args }),
       ...options,

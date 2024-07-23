@@ -19,6 +19,9 @@ export const CreateNoteForm = ({
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
+    /**
+     * Parse the form input and ensure it matches our defined schema/type
+     */
     const data = CreateNoteSchema.parse({
       title: formData.get("title"),
       content: formData.get("content"),

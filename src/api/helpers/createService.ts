@@ -4,7 +4,7 @@ export type SimpleServiceArgs = Record<string, string>;
 
 export type ComplexServiceArgs = {
   urlParams?: Record<string, string>;
-  queryParams?: ConstructorParameters<typeof URLSearchParams>[0];
+  searchParams?: ConstructorParameters<typeof URLSearchParams>[0];
   body?: any;
 };
 
