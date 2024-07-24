@@ -7,28 +7,31 @@ export const notesService = {
 	getAll: createQueryService({
 		url: "/notes",
 		tags: ["notes"] as const,
-		call: (args: ServiceArgs<{ searchParams?: NoteSearchParams }>) => jsonFetch<Notes>(args),
-		queryDefaults: { staleTime: ms("5m") },
+		call: (url, args: ServiceArgs<{ searchParams?: NoteSearchParams }>) =>
+			jsonFetch<Notes>({ url, ...args }),
 	}),
 	get: createQueryService({
 		url: "/notes/:noteId",
 		tags: ["notes"] as const,
-		call: (args: ServiceArgs<NoteParams>) => jsonFetch<Note>(args),
+		call: (url, args: ServiceArgs<NoteParams>) => jsonFetch<Note>({ url, ...args }),
+		queryDefaults: { staleTime: ms("5m") },
 	}),
 	create: createService({
 		url: "/notes",
-		call: (args: ServiceArgs<{ body: CreateNote }>) =>
+		call: (url, args: ServiceArgs<{ body: CreateNote }>) =>
 			jsonFetch<Note>({
 				...args,
+				url,
 				method: "POST",
 				body: JSON.stringify(args.body),
 			}),
 	}),
 	edit: createService({
 		url: "/notes/:noteId",
-		call: (args: ServiceArgs<{ urlParams: NoteParams; body: Partial<CreateNote> }>) =>
+		call: (url, args: ServiceArgs<{ urlParams: NoteParams; body: Partial<CreateNote> }>) =>
 			jsonFetch<Note>({
 				...args,
+				url,
 				method: "PUT",
 				body: JSON.stringify(args.body),
 			}),

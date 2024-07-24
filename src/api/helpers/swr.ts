@@ -3,13 +3,13 @@
 import useSWR from "swr";
 import type { ComplexServiceArgs, InferServiceArgs } from "./createService";
 
-export const useSWRService = <TArgs extends ComplexServiceArgs, TResult>(
+export const useSWRService = <TUrl extends string, TArgs extends ComplexServiceArgs, TResult>(
 	{
 		url,
 		call,
 	}: {
-		url: string;
-		call: InferServiceArgs<TArgs, TResult>;
+		url: TUrl;
+		call: InferServiceArgs<TUrl, TArgs, TResult>;
 	},
 	args: TArgs,
-) => useSWR([url, args.urlParams, args.searchParams], () => call(args));
+) => useSWR([url, args.urlParams, args.searchParams], () => call(url, args));

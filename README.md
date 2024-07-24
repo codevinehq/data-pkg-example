@@ -34,6 +34,31 @@ const notesService = {
 };
 ```
 
+### Queries
+
+```ts
+const query = useQuery(api.notes.get.query({ urlParams: { noteId } }));
+
+const queryWithOptions = useQuery({
+  ...api.notes.get.query({ urlParams: { noteId } }),
+  select: ({ content }) => content
+});
+```
+
+### Mutations
+
+```ts
+const createNote = useMutation({
+  mutationFn: api.notes.create.call
+});
+
+createNote.mutate({
+  title: '...',
+  content: '...'
+});
+```
+
+
 ## Example query migration
 
 Everything is typed based on the service definitions, useQuery (including select) and useMutation (including onSuccess etc.) inherit the types automatically. No more generics :tada:
@@ -206,7 +231,7 @@ const handleClickSubscribe = () => {
 ### [Notes](src/pages/Notes/Notes.tsx)
 
 - useQuery
-- useMutation with [invalidate by tags](src/pages/Notes/Notes.tsx#L29) (similar to queryKeyFactory) `invalidateByTags(notesService.getAll.tags)`
+- useMutation with [invalidate by tags](src/pages/Notes/Notes.tsx#L29) (similar to queryKeyFactory) `invalidateByTags(api.notes.getAll.tags)`
 - Form with invalidation
 - [Tests using MSW](src/pages/Note/Note.spec.tsx)
 
@@ -215,9 +240,9 @@ const handleClickSubscribe = () => {
 - useSuspenseQuery - [Example](src/pages/Note/Note.tsx#L12), [Error handling](src/layouts/Default.tsx#L34), [Global Loader](src/layouts/Default.tsx#L35)
 - useMutation with single endpoint invalidation
 - - Example 1: [Refetch](src/pages/Note/Note.tsx#L37)
-- - Example 2: [Invalidate by params](src/pages/Note/Note.tsx#L40) `invalidateByUrlParams(notesService.get, { noteId: id! })`
-- - Example 3: [Invalidate by url](src/pages/Note/Note.tsx#L46) `invalidateByUrl(notesService.get, { noteId: id! })`
-- - Example 4: [Invalidate by queryKey](src/pages/Note/Note.tsx#L51) `notesService.get.query({ noteId: id! }).queryKey`
+- - Example 2: [Invalidate by params](src/pages/Note/Note.tsx#L40) `invalidateByUrlParams(api.notes.get, { noteId: id! })`
+- - Example 3: [Invalidate by url](src/pages/Note/Note.tsx#L46) `invalidateByUrl(api.notes.get, { noteId: id! })`
+- - Example 4: [Invalidate by queryKey](src/pages/Note/Note.tsx#L51) `api.notes.get.query({ noteId: id! }).queryKey`
 
 ### [Create Note](src/pages/CreateNote/CreateNote.tsx)
 
