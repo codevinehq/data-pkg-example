@@ -6,6 +6,10 @@ import { render, screen } from "../../test-utils";
 import { Note } from "./Note";
 
 const setup = (mockNotes: Notes) => {
+	/**
+	 * Use our entire mock api so we can test the GET and PUT
+	 * functionality
+	 */
 	server.use(...handlers);
 
 	return render(

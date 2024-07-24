@@ -10,6 +10,10 @@ beforeAll(() => {
 
 afterEach(() => {
 	server.resetHandlers();
+	/**
+	 * Restore the original notes mock array
+	 * to avoid leaking between tests
+	 */
 	resetMockNotes();
 });
 

@@ -14,6 +14,10 @@ describe("Page - Note", () => {
 	it("should create a new note", async () => {
 		const mockNote = createNoteMock();
 
+		/**
+		 * Use out mock api helpers to create a POST endpoint
+		 * with a fixed mock for easier assertions
+		 */
 		server.use(createNote(mockNote));
 
 		const { user } = render(<CreateNote />);

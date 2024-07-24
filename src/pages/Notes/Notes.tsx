@@ -1,13 +1,13 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
 import { useState } from "react";
+
 import { api } from "../../api";
 import { invalidateByTags } from "../../api/helpers/invalidators";
 import { ButtonLink } from "../../components/Button";
 import { Input } from "../../components/Form";
 import { Spinner } from "../../components/Icons";
 import { Heading, Link } from "../../components/Typography";
-import { CreateNoteForm } from "../CreateNote/CreateNote";
+import { CreateNoteForm } from "../CreateNote/CreateNoteForm";
 
 export const Notes = () => {
 	const queryClient = useQueryClient();
