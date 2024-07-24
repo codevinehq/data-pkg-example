@@ -4,7 +4,7 @@ const note = (id: ":id" | (string & {})) => `/${id}` as const;
 const create = () => "/create" as const;
 
 export const routes = {
-  notes,
-  note,
-  create,
+	notes,
+	note,
+	create,
 } as const;
