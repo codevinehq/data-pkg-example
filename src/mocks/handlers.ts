@@ -26,14 +26,12 @@ export const handlers = [
 	http.get(api.notes.getAll.url, ({ request }) => {
 		const url = new URL(request.url);
 		const search = url.searchParams.get("search");
+		const favouritesOnly = url.searchParams.get("favouritesOnly") === "true";
+		const notes = mockNotes
+			.filter((n) => (search ? n.title.toLowerCase().includes(search.toLowerCase()) : true))
+			.filter((n) => (favouritesOnly ? n.isFavourite : true));
 
-		if (search) {
-			return HttpResponse.json(
-				mockNotes.filter((n) => n.title.toLowerCase().includes(search.toLowerCase())),
-			);
-		}
-
-		return HttpResponse.json(mockNotes);
+		return HttpResponse.json(notes);
 	}),
 	http.post(api.notes.create.url, async ({ request }) => {
 		const newNote = CreateNoteSchema.safeParse(await request.json());

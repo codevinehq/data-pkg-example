@@ -7,18 +7,22 @@ import { ButtonLink } from "../../components/Button";
 import { Input } from "../../components/Form";
 import { Spinner } from "../../components/Icons";
 import { Heading, Link } from "../../components/Typography";
+import { boolAsString } from "../../lib/helpers";
 import { CreateNoteForm } from "../CreateNote/CreateNoteForm";
 
 export const Notes = () => {
 	const queryClient = useQueryClient();
 	const [search, setSearch] = useState("");
+	const [favouritesOnly, setFavouritesOnly] = useState<boolean>(false);
 	const {
 		data: notes,
 		isLoading,
 		isFetching,
 		isError,
 	} = useQuery({
-		...api.notes.getAll.query({ searchParams: { search } }),
+		...api.notes.getAll.query({
+			searchParams: { search, favouritesOnly: boolAsString(favouritesOnly) },
+		}),
 		placeholderData: keepPreviousData,
 	});
 	const { mutate, submittedAt } = useMutation({
@@ -37,23 +41,39 @@ export const Notes = () => {
 	return (
 		<section className="space-y-6">
 			<div className="flex items-center justify-between">
-				<Heading level={1}>Notes</Heading>
+				<div className="flex items-center gap-4">
+					<Heading level={1}>Notes</Heading>
+					{isFetching && <Spinner />}
+				</div>
 				<ButtonLink to="/create">Create note</ButtonLink>
 			</div>
 
-			<label htmlFor="search" className="sr-only">
-				Filter notes
-			</label>
-			<div className="flex items-center gap-2">
-				<Input
-					placeholder="Filter notes..."
-					type="text"
-					name="search"
-					id="search"
-					value={search}
-					onChange={(e) => setSearch(e.target.value)}
-				/>
-				{isFetching && <Spinner />}
+			<div className="flex items-center gap-8">
+				<div className="flex items-center gap-2">
+					<label htmlFor="search" className="sr-only">
+						Filter notes
+					</label>
+					<Input
+						placeholder="Filter notes..."
+						type="text"
+						name="search"
+						id="search"
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
+					/>
+				</div>
+
+				<div className="flex items-center gap-2">
+					<label htmlFor="favs">Only favs</label>
+					<Input
+						className="w-fit"
+						type="checkbox"
+						name="favs"
+						id="favs"
+						checked={favouritesOnly}
+						onChange={(e) => setFavouritesOnly(e.target.checked)}
+					/>
+				</div>
 			</div>
 
 			<ul>

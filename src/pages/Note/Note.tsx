@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import invariant from "tiny-invariant";
 import { api } from "../../api";
-import { type CreateNote, CreateNoteSchema, FavouriteNote } from "../../api/note/schema";
+import { type CreateNote, CreateNoteSchema, type FavouriteNote } from "../../api/note/schema";
 import { Button } from "../../components/Button";
 import { Input, Textarea } from "../../components/Form";
 import { Heading } from "../../components/Typography";

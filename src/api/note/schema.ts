@@ -18,7 +18,7 @@ export type Notes = z.infer<typeof NotesSchema>;
 export const CreateNoteSchema = NoteSchema.pick({ title: true, content: true });
 export type CreateNote = z.infer<typeof CreateNoteSchema>;
 
-export type NoteSearchParams = { search: string };
+export type NoteSearchParams = { search: string; favouritesOnly?: "true" | "false" };
 
 export const FavouriteNoteSchema = z.object({
 	isFavourite: z.boolean(),
