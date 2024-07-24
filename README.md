@@ -4,6 +4,8 @@ The @benefex/data package builds on the concepts behind both `useApi` and our Re
 
 Its primary focus is centralising service creation and types. It will also provide convenience methods for React Query, though this could be expanded to more libs in the future if we migrate away from React Query ([see SWR example](src/pages/Note/Note.tsx#L26)).
 
+Once you have read this document feel free to try the tasks [here](tasks.md).
+
 ## How Will It Work?
 
 ### Service Definitions
