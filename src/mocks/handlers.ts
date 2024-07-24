@@ -1,6 +1,5 @@
 import { seed } from "@ngneat/falso";
 import { http, HttpResponse } from "msw";
-import { z } from "zod";
 import { api } from "../api";
 import { createNoteMock } from "../api/note/mocks";
 import { CreateNoteSchema, FavouriteNoteSchema } from "../api/note/schema";
