@@ -18,7 +18,7 @@ Example:
 
 ```ts
 const notesService = {
-  get: createService({
+  get: createQueryService({
     url: "/notes/:noteId",
     tags: ["notes"] as const,
     // urlParams only
@@ -121,6 +121,8 @@ const followTopic = useApi({
   },
 });
 
+const [isFollowing, setIsFollowing] = useState(topic.isUserFollowing);
+
 useEffect(() => {
   if (followTopic.isSuccess) {
     setIsFollowing(true);
@@ -155,6 +157,8 @@ const handleClickSubscribe = () => {
     name: topic.name,
   });
 };
+
+{isFollowing ? <Button>Unfollow</Button> : ...}
 ```
 
 </td>
@@ -174,6 +178,7 @@ const followTopic = useMutation({
     setToastText("home.feed.topics.successToast");
     setShowToast(true);
 
+    // Return invalidation so isPending stays true until the topic is refetched
     return queryClient.invalidateQueries({
       predicate: invalidateByTags(api.topics.all.tags)
     });
@@ -183,10 +188,13 @@ const followTopic = useMutation({
     setShowToast(true);
   },
 });
+const isFollowing = followTopic.isPending || topic.isFollowing;
 
 const handleClickSubscribe = () => {
   followTopic.mutate({ id: topic.id, name: topic.name });
 };
+
+{isFollowing ? <Button>Unfollow</Button> : ...}
 ```
 
 </td>
