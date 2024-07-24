@@ -1,8 +1,9 @@
 import { seed } from "@ngneat/falso";
 import { http, HttpResponse } from "msw";
+import { z } from "zod";
 import { api } from "../api";
 import { createNoteMock } from "../api/note/mocks";
-import { CreateNoteSchema } from "../api/note/schema";
+import { CreateNoteSchema, FavouriteNoteSchema } from "../api/note/schema";
 
 seed("42");
 
@@ -60,6 +61,23 @@ export const handlers = [
 		}
 
 		Object.assign(existingNote, newNote.data);
+
+		return HttpResponse.json(existingNote, { status: 200 });
+	}),
+	http.post(api.notes.favourite.url, async ({ request, params }) => {
+		const { noteId } = params;
+		const body = FavouriteNoteSchema.safeParse(await request.json());
+		const existingNote = mockNotes.find((n) => n.id === noteId);
+
+		if (!existingNote) {
+			return HttpResponse.json({}, { status: 404 });
+		}
+
+		if (!body.success) {
+			return HttpResponse.json(body.error.flatten(), { status: 400 });
+		}
+
+		existingNote.isFavourite = body.data.isFavourite;
 
 		return HttpResponse.json(existingNote, { status: 200 });
 	}),

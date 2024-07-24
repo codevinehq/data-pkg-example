@@ -8,6 +8,7 @@ export const NoteSchema = z.object({
 	id: z.string().uuid(),
 	title: z.string(),
 	content: z.string(),
+	isFavourite: z.boolean().default(false).optional(),
 });
 export type Note = z.infer<typeof NoteSchema>;
 
@@ -18,3 +19,8 @@ export const CreateNoteSchema = NoteSchema.pick({ title: true, content: true });
 export type CreateNote = z.infer<typeof CreateNoteSchema>;
 
 export type NoteSearchParams = { search: string };
+
+export const FavouriteNoteSchema = z.object({
+	isFavourite: z.boolean(),
+});
+export type FavouriteNote = z.infer<typeof FavouriteNoteSchema>;

@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import invariant from "tiny-invariant";
 import { api } from "../../api";
-import { type CreateNote, CreateNoteSchema } from "../../api/note/schema";
+import { type CreateNote, CreateNoteSchema, FavouriteNote } from "../../api/note/schema";
 import { Button } from "../../components/Button";
 import { Input, Textarea } from "../../components/Form";
 import { Heading } from "../../components/Typography";
@@ -27,7 +27,7 @@ export const Note = () => {
 	//   urlParams: { noteId: id! },
 	// });
 
-	const { mutate } = useMutation({
+	const edit = useMutation({
 		mutationFn: (body: Partial<CreateNote>) =>
 			api.notes.edit.call({ urlParams: { noteId: id }, body }),
 		onSuccess() {
@@ -53,6 +53,18 @@ export const Note = () => {
 		},
 	});
 
+	const favourite = useMutation({
+		mutationFn: (body: FavouriteNote) =>
+			api.notes.favourite.call({ urlParams: { noteId: id }, body }),
+		onSuccess() {
+			return refetch();
+		},
+	});
+	/**
+	 * Optimistic update
+	 */
+	const isFavourite = (favourite.isPending && favourite.variables.isFavourite) || note.isFavourite;
+
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
@@ -65,24 +77,34 @@ export const Note = () => {
 			content: formData.get("content"),
 		});
 
-		mutate(data);
+		edit.mutate(data);
 	};
 
 	return (
 		<form onSubmit={handleSubmit}>
 			<section className="space-y-4">
-				<Heading level={1}>
-					{editMode ? (
-						<>
-							<label htmlFor="title" className="sr-only">
-								Title
-							</label>
-							<Input id="title" name="title" defaultValue={note.title} />
-						</>
-					) : (
-						note.title
-					)}
-				</Heading>
+				<div className="flex items-center justify-between">
+					<Heading level={1}>
+						{editMode ? (
+							<>
+								<label htmlFor="title" className="sr-only">
+									Title
+								</label>
+								<Input id="title" name="title" defaultValue={note.title} />
+							</>
+						) : (
+							note.title
+						)}
+					</Heading>
+					<Button
+						disabled={favourite.isPending}
+						onClick={() => {
+							favourite.mutate({ isFavourite: !isFavourite });
+						}}
+					>
+						{isFavourite ? "Unfavourite" : "Favourite"}
+					</Button>
+				</div>
 				{editMode ? (
 					<>
 						<label htmlFor="content" className="sr-only">

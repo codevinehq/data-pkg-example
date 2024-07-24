@@ -1,7 +1,14 @@
 import ms from "ms";
 import { type ServiceArgs, createQueryService, createService } from "../helpers/createService";
 import { jsonFetch } from "../helpers/jsonFetch";
-import type { CreateNote, Note, NoteParams, NoteSearchParams, Notes } from "./schema";
+import type {
+	CreateNote,
+	FavouriteNote,
+	Note,
+	NoteParams,
+	NoteSearchParams,
+	Notes,
+} from "./schema";
 
 export const notesService = {
 	getAll: createQueryService({
@@ -35,5 +42,10 @@ export const notesService = {
 				method: "PUT",
 				body: JSON.stringify(args.body),
 			}),
+	}),
+	favourite: createService({
+		url: "/notes/:noteId/favourite",
+		call: (url, args: ServiceArgs<{ urlParams: NoteParams; body: FavouriteNote }>) =>
+			jsonFetch<Note>({ ...args, url, method: "POST", body: JSON.stringify(args.body) }),
 	}),
 };
